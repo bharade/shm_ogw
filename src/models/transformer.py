@@ -59,4 +59,20 @@ class TransformerModel(keras.Model):
             TransformerEncoder(head_size,num_heads,ff_dim,dropout) for _ in range(num_transformer_blocks)
         ]
 
-        #flatten and MLP layers
+        # Flatten and MLP layers
+        self.flatten_layer = layers.Flatten()
+        self.mlp_layers = [layers.Dense(units=dim, activation="relu") for dim in mlp_units]
+        self.dropout_layer = layers.Dropout(mlp_dropout)
+
+        # Output layer for binary classification
+        self.output_layer = layers.Dense(units=1, activation="sigmoid")
+    
+    def call(self, inputs):
+        x = self.reshape_layer(inputs)
+        for encoder in self.encoder_blocks:
+            x = encoder(x)
+        x = self.flatten_layer(x) 
+        for mlp in self.mlp_layers:
+            x = mlp(x)
+            x = self.dropout_layer(x)
+        return self.output_layer(x)

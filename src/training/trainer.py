@@ -82,12 +82,6 @@ class Trainer:
         )
         print("Training completed.......:D")
         return x_test_max, y_test
-            
-    def evaluate(self):
-        """
-        Evaluates the trained model on the test set using relevant metrics.
-        """
-        x_test_max, y_test = self.dataloader.load_test_data()
         
 
 if __name__ == "__main__":

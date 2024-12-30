@@ -80,35 +80,6 @@ class Trainer:
             verbose=1
         )
         print("Training completed.......:D")
-
-        # # Training loop
-        # for epoch in range(self.epochs):
-        #     print(f"Epoch {epoch + 1}/{self.epochs}")
-
-        #     # Train on batches of data
-        #     for batch in range(len(x_train_max) // self.batch_size):
-        #         with tf.GradientTape() as tape:
-        #             start = batch * self.batch_size
-        #             end = (batch + 1) * self.batch_size
-        #             logits = self.model(x_train_max[start:end])
-        #             loss = self.loss_fn(y_train[start:end], logits)
-                
-        #         # Compute gradients and update model weights
-        #         grads = tape.gradient(loss, self.model.trainable_variables)
-        #         self.optimizer.apply_gradients(zip(grads, self.model.trainable_variables))
-
-        #     # Validation at the end of each epoch
-        #     val_logits = self.model(x_val_max)
-        #     val_loss = self.loss_fn(y_val, val_logits)
-        #     print(f"Validation Loss: {val_loss:.4f}")
-
-        #     # Early stopping and model checkpointing
-        #     self.early_stopping(val_loss=val_loss)
-        #     self.model_checkpoint(epoch=epoch, logs={'val_loss': val_loss})
-
-        #     if self.early_stopping.stopped_epoch > 0:
-        #         print(f"Early stopping at epoch {self.early_stopping.stopped_epoch}")
-        #         break
             
     def evaluate(self):
         """
@@ -140,8 +111,6 @@ if __name__ == "__main__":
         dropout=0.3,
     )
     print("Model created successfully.")
-
-    # Instantiate Trainer and start training
     trainer = Trainer(model, dataloader, epochs=200, batch_size=32, learning_rate=1e-4, patience=10)
     trainer.train()
 

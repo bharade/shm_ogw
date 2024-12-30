@@ -69,14 +69,14 @@ class Trainer:
 
 if __name__ == "__main__":
     # Instantiate DataLoader and TransformerModel
-    dataloader = DataLoader(data_dir="your_data_directory") 
+    dataloader = DataLoader(data_dir="C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data") 
     model = TransformerModel(
         input_shape=(874,), 
         head_size=512,
         num_heads=8,
         ff_dim=128,
         num_transformer_blocks=4,
-        mlp_units=,
+        mlp_units=[256],
         mlp_dropout=0.4,
         dropout=0.3,
     )

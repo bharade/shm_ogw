@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import os
 import sys
+import csv
+import random
 from sklearn.train_test_split import train_test_split
 
 class DataLoader(self):
@@ -77,7 +79,7 @@ class DataLoader(self):
     def split_data(self,udam,dam,test_size=0.2,val_size=0.2, random_state=42):
         """split the data into train, validation and test sets"""
         full_database=udam+dam
-        ramndom.shuffle(full_database)
+        random.shuffle(full_database)
         data=[sample['Data'] for sample in full_database]
         labels=[sample['Condition'] for sample in full_database]
         #split for test set

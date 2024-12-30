@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+
 import numpy as np
 import pandas as pd
 import os
@@ -42,7 +43,7 @@ class TransformerEncoder(layers.layer):
         return x
 
 class TransformerModel(keras.Model):
-    def __init__(self,input_shape,head_size,num_heads,ff_dim,num_transformer_blocks,mlp_units,dropour=0,mlp_dropout=0,**kwargs):
+    def __init__(self,input_shape,head_size,num_heads,ff_dim,num_transformer_blocks,mlp_units,dropout=0,mlp_dropout=0,**kwargs):
         super().__init__(**kwargs)
         self.input_shape=input_shape
         self.head_size=head_size

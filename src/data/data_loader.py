@@ -73,14 +73,23 @@ class DataLoader:
     def _augment_damage_data(self,damage_samples,augment_factor=1, noise_level=0.01):
         """augment the damage data"""
         augmented_samples = []
+        print(f"Augmenting damage data...{len(damage_samples)}")
         for sample in damage_samples:
-            original_data=np.array(sample['Data'])
-            for i in range(augment_factor):
-                noise = np.random.normal(0, noise_level, len(sample['Data']))
-                augmented_data = sample['Data'] + noise
-                augmented_sample = {'Sample ID': sample['Sample ID'], 'Condition': sample['Condition'], 'Data': augmented_data.tolist()}
+            original_data = np.array(sample['Data'])
+            for _ in range(augment_factor):
+                # Create noise and apply to the original data
+                noise = np.random.normal(0, noise_level, original_data.shape)
+                augmented_data = original_data + noise
+                # Create an augmented sample with the same metadata
+                augmented_sample = {
+                    'Sample ID': f"{sample['Sample ID']}_aug",
+                    'Condition': sample['Condition'],  # Keep the same condition
+                    'Data': augmented_data.tolist()
+                }
                 augmented_samples.append(augmented_sample)
-        return augmented_samples
+        print(f"Augmented damage data...{len(augmented_samples)}")
+        damage_samples.extend(augmented_samples)
+        return damage_samples
     
 
     def split_data(self,udam,dam,test_size=0.2,val_size=0.2, random_state=42):
@@ -100,6 +109,7 @@ class DataLoader:
         x_train_downsampled=np.max(x_train.reshape(x_train.shape,-1,downsampling_factor),axis=2)
         x_val_downsampled=np.max(x_val.reshape(x_val.shape,-1,downsampling_factor),axis=2)
         x_test_downsampled=np.max(x_test.reshape(x_test.shape,-1,downsampling_factor),axis=2)
+
         return x_train_downsampled,x_val_downsampled,x_test_downsampled
     
 

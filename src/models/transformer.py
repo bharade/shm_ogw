@@ -26,7 +26,7 @@ class TransformerEncoder(layers.Layer):
             [
                 layers.Conv1D(filters=ff_dim,kernel_size=1,activation='relu'),
                 layers.Dropout(dropout),
-                layers.Conv1D(filters=inputs.shape[-1],kernel_size=1),
+                #layers.Conv1D(filters=inputs.shape[-1],kernel_size=1),
             ]
         )
         self.layer_norm2=layers.LayerNormalization(epsilon=1e-6)

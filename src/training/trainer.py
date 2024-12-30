@@ -75,8 +75,8 @@ class Trainer:
             x_train_max,
             y_train,
             validation_data=(x_val_max, y_val),  # Use x_val_max and y_val for validation
-            epochs=200,
-            batch_size=32,
+            epochs=self.epochs,
+            batch_size=self.batch_size,
             callbacks=callbacks,
             verbose=1
         )

@@ -6,7 +6,7 @@ from src.data.data_loader import DataLoader
 from src.models.transformer import TransformerModel
 import os
 from pathlib import Path
-
+from src.evaluation.evaluator import Evaluator
 
 class Trainer:
     def __init__(self, model, dataloader, epochs, batch_size, learning_rate, patience):
@@ -70,6 +70,7 @@ class Trainer:
                 metrics=["accuracy"],
         )
         model.summary()
+        
         history = model.fit(
             x_train_max,
             y_train,
@@ -80,17 +81,14 @@ class Trainer:
             verbose=1
         )
         print("Training completed.......:D")
+        return x_test_max, y_test
             
     def evaluate(self):
         """
         Evaluates the trained model on the test set using relevant metrics.
         """
         x_test_max, y_test = self.dataloader.load_test_data()
-        test_logits = self.model(x_test_max)
-        test_loss = self.loss_fn(y_test, test_logits).numpy()
-        test_accuracy = tf.keras.metrics.binary_accuracy(y_test, test_logits).numpy()
-        print(f"Test Loss: {test_loss:.4f}")
-        print(f"Test Accuracy: {test_accuracy:.4f}")
+        
 
 if __name__ == "__main__":
     # Instantiate DataLoader and TransformerModel
@@ -112,7 +110,8 @@ if __name__ == "__main__":
     )
     print("Model created successfully.")
     trainer = Trainer(model, dataloader, epochs=200, batch_size=32, learning_rate=1e-4, patience=10)
-    trainer.train()
+    x_test_max,y_test=trainer.train()
 
-    # Evaluate the best model on the test set
-    trainer.evaluate()
+    # Instantiate the Evaluator
+    evaluator = Evaluator(model_path="C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/artifacts/transformer_model.keras")
+    evaluator.evaluate(x_test_max=x_test_max, y_test=y_test)

@@ -6,14 +6,14 @@ import matplotlib.pyplot as plt
 from data.data_loader import DataLoader
 
 class Evaluator:
-    def __init__(self, model_path, dataloader):
+    def __init__(self, model_path):
         self.model_path = model_path
-        self.dataloader = dataloader
-        self.model = tf.keras.models.load_model(model_path)  # Load your best saved model
+        #self.dataloader = dataloader
+        self.model = tf.keras.models.load_model(Path(model_path))  # Load your best saved model
+        print("Model loaded successfully.")
 
-    def evaluate(self):
-        # Load the test data
-        x_test_max, y_test = self.dataloader.load_test_data()
+    def evaluate(self,x_test_max,y_test):
+        #x_test_max, y_test = self.dataloader.load_test_data()
 
         # Predictions and Pre-processing (if required)
         y_pred_probs = self.model.predict(x_test_max)  # Probabilities
@@ -41,8 +41,7 @@ class Evaluator:
         print(f"Precision: {precision:.4f}")
         print(f"Recall: {recall:.4f}")
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # Instantiate the DataLoader and Evaluator
-    dataloader = DataLoader(data_dir="your_data_directory")  # Replace with your data directory
-    evaluator = Evaluator(model_path="best_model.keras", dataloader=dataloader)  # Update with your model path
-    evaluator.evaluate()
+    # dataloader = DataLoader(data_dir="C:\\Users\\adibh\\OneDrive\\Desktop\projects\\simplified_mtp\\shm_ogw\\artifacts\\transformer_model.keras")  # Replace with your data directory
+    

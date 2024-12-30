@@ -1,13 +1,13 @@
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
+from keras import layers
 from pathlib import Path
 import numpy as np
 import pandas as pd
 import os
 import sys
 
-class TransformerEncoder(layers.layer):
+class TransformerEncoder(layers.Layer):
     """
     implements a single transformer encoder block
     """
@@ -55,7 +55,7 @@ class TransformerModel(keras.Model):
         self.mlp_dropout=mlp_dropout
         
         self.input_layer=layers.Input(shape=input_shape)
-        self.reshape_layer=layers.Resahpe((input_shape,1))
+        self.reshape_layer=layers.Reshape((input_shape,1))
 
         self.encoder_blocks=[
             TransformerEncoder(head_size,num_heads,ff_dim,dropout) for _ in range(num_transformer_blocks)

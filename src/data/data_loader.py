@@ -6,7 +6,7 @@ import os
 import sys
 import csv
 import random
-from sklearn.train_test_split import train_test_split
+from sklearn.model_selection import train_test_split
 
 class DataLoader:
     def __init__(self,baseline_path:Path,damage_path:Path):
@@ -17,11 +17,16 @@ class DataLoader:
         """load and preprocess the data from csv files"""
         udam=[]
         dam=[]
+        print("Loading and preprocessing Baseline data...")
         self._process_csv_files(self.baseline_path,udam,0)
+        print("Loading and preprocessing Damage data...")
         self._process_csv_files(self.damage_path,dam,1)
+        print("Normalizing data...")
         self._normlize_data(udam)
         self._normlize_data(dam)
+        print("Augmenting damage data...")
         dam=self._augment_damage_data(dam)
+        print("Data loading and preprocessing completed.")
         return udam,dam
 
 

@@ -1,7 +1,10 @@
 import tensorflow as tf
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from data import DataLoader  # Import your DataLoader class
-from models import TransformerModel # Import your Transformer model
+ # Import your DataLoader class
+from src.data.data_loader import DataLoader
+# Import your Transformer model
+from src.models.transformer import TransformerModel
+
 from pathlib import Path
 
 
@@ -76,6 +79,7 @@ if __name__ == "__main__":
         damage_path=Path("C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data/Damage")
     )
     dataloader.load_data()
+    print("Data loaded successfully.")
     model = TransformerModel(
         input_shape=(874,), 
         head_size=512,
@@ -86,9 +90,11 @@ if __name__ == "__main__":
         mlp_dropout=0.4,
         dropout=0.3,
     )
-    
+    print("Model created successfully.")
+
     # Instantiate Trainer and start training
     trainer = Trainer(model, dataloader, epochs=200, batch_size=32, learning_rate=1e-4, patience=10)
+    print("Training started...")
     trainer.train()
 
     # Evaluate the best model on the test set

@@ -2,6 +2,8 @@ import tensorflow as tf
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from data import DataLoader  # Import your DataLoader class
 from models import TransformerModel # Import your Transformer model
+from pathlib import Path
+
 
 class Trainer:
     def __init__(self, model, dataloader, epochs, batch_size, learning_rate, patience):
@@ -69,7 +71,11 @@ class Trainer:
 
 if __name__ == "__main__":
     # Instantiate DataLoader and TransformerModel
-    dataloader = DataLoader(data_dir="C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data") 
+    dataloader = DataLoader(
+        baseline_path=Path("C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data/Baseline"),
+        damage_path=Path("C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data/Damage")
+    )
+    dataloader.load_data()
     model = TransformerModel(
         input_shape=(874,), 
         head_size=512,
@@ -80,7 +86,7 @@ if __name__ == "__main__":
         mlp_dropout=0.4,
         dropout=0.3,
     )
-
+    
     # Instantiate Trainer and start training
     trainer = Trainer(model, dataloader, epochs=200, batch_size=32, learning_rate=1e-4, patience=10)
     trainer.train()

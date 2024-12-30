@@ -1,4 +1,6 @@
 import numpy as np
+# import the Path class from the pathlib module
+from pathlib import Path
 import pandas as pd
 import os
 import sys
@@ -6,8 +8,8 @@ import csv
 import random
 from sklearn.train_test_split import train_test_split
 
-class DataLoader(self):
-    def __init__(self,baseline_path,damage_path):
+class DataLoader:
+    def __init__(self,baseline_path:Path,damage_path:Path):
         self.baseline_path=baseline_path
         self.damage_path=damage_path
 

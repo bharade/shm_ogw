@@ -45,7 +45,7 @@ class Trainer:
 
                 # Define the path to the artifacts folder relative to training.py
         artifacts_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'artifacts'))
-
+        print(f"the shape of each sample is {x_train_max[0].shape}")
         # Ensure the artifacts folder exists
         os.makedirs(artifacts_path, exist_ok=True)
         print(f"Artifacts path: {artifacts_path} created successfully.")
@@ -63,6 +63,13 @@ class Trainer:
         ]
         # Training with the checkpoint callback
         print("Training started.....:D")
+        # Compilation with binary classification loss
+        model.compile(
+                loss="binary_crossentropy",
+                optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+                metrics=["accuracy"],
+        )
+        model.summary()
         history = model.fit(
             x_train_max,
             y_train,

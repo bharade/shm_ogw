@@ -105,12 +105,22 @@ class DataLoader:
 
         return np.array(x_train),np.array(x_val),np.array(x_test),np.array(y_train),np.array(y_val),np.array(y_test)
     
-    def downsample_data(self,x_train,x_val,x_test,downsampling_factor=5):
-        x_train_downsampled=np.max(x_train.reshape(x_train.shape,-1,downsampling_factor),axis=2)
-        x_val_downsampled=np.max(x_val.reshape(x_val.shape,-1,downsampling_factor),axis=2)
-        x_test_downsampled=np.max(x_test.reshape(x_test.shape,-1,downsampling_factor),axis=2)
-
-        return x_train_downsampled,x_val_downsampled,x_test_downsampled
+    def downsample_data(self,x_train,x_val,x_test):
+        print("before downsampling:",x_train.shape)
+        # Convert lists to NumPy arrays for compatibility with machine learning models
+        x_train = np.array(x_train)
+        x_test = np.array(x_test)
+        x_val= np.array(x_val)
+        # Print the shapes of the resulting arrays for verification
+        print(f"x_train shape: {x_train.shape}")
+        #print(f"y_train shape: {y_train.shape}")
+        print(f"x_test shape: {x_test.shape}")
+        #print(f"y_test shape: {y_test.shape}")
+        x_train_max = np.max(x_train.reshape(x_train.shape[0], -1, 5), axis=2)
+        x_test_max = np.max(x_test.reshape(x_test.shape[0], -1, 5), axis=2)
+        x_val_max = np.max(x_val.reshape(x_val.shape[0], -1, 5), axis=2)
+        print(f"after downsampling: 1. train: {x_train_max.shape}\n 2. validation: {x_val_max.shape}\n 3. test:{x_test_max.shape}")
+        return x_train_max,x_val_max,x_test_max
     
 
 

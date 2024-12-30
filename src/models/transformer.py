@@ -55,7 +55,7 @@ class TransformerModel(keras.Model):
         self.mlp_dropout=mlp_dropout
         
         self.input_layer=layers.Input(shape=input_shape)
-        self.reshape_layer=layers.Reshape((input_shape,1))
+        self.reshape_layer=layers.Reshape((input_shape[0],1))
 
         self.encoder_blocks=[
             TransformerEncoder(head_size,num_heads,ff_dim,dropout) for _ in range(num_transformer_blocks)

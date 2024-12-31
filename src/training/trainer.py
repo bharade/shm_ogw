@@ -52,7 +52,7 @@ class Trainer:
         print(f"Artifacts path: {artifacts_path} created successfully.")
         # Define the checkpoint callback
         checkpoint_callback = ModelCheckpoint(
-            filepath=os.path.join(artifacts_path, "model_checkpoint_{epoch:02d}.keras"),  # Save in artifacts folder with epoch number
+            filepath=os.path.join(artifacts_path, "transformer_model.keras"),  # Save in artifacts folder with epoch number
             save_weights_only=False,  # Save the full model
             save_freq='epoch',  # Save at the end of each epoch
             verbose=1  # To print a message when the model is saved
@@ -82,12 +82,12 @@ class Trainer:
             verbose=1
         )
         print("Training completed.......:D")
-        return x_test_max, y_test
+        self.evaluate()
     
     def evaluate(self):
         # Instantiate the Evaluator
         evaluator = Evaluator(model_path="C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/artifacts/transformer_model.keras")
-        evaluator.evaluate(x_test_max=x_test_max, y_test=y_test)
+        evaluator.evaluate(x_test_max=self.x_test_max, y_test=self.y_test)
         
 
 if __name__ == "__main__":

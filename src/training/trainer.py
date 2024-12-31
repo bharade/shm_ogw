@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+#from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
  # Import your DataLoader class
 from src.data.data_loader import DataLoader
 # Import your Transformer model
@@ -22,8 +22,8 @@ class Trainer:
         self.loss_fn = tf.keras.losses.BinaryCrossentropy()
 
         # Callbacks for early stopping and model checkpointing
-        self.early_stopping = EarlyStopping(patience=patience, restore_best_weights=True)
-        self.model_checkpoint = ModelCheckpoint("best_model.keras", save_best_only=True)
+        self.early_stopping = tf.keras.callbacks.EarlyStopping(patience=patience, restore_best_weights=True)
+        self.model_checkpoint = tf.keras.callbacks.ModelCheckpoint("best_model.keras", save_best_only=True)
 
     def get_data(self):
         # Load your training and validation data
@@ -51,8 +51,8 @@ class Trainer:
         os.makedirs(artifacts_path, exist_ok=True)
         print(f"Artifacts path: {artifacts_path} created successfully.")
         # Define the checkpoint callback
-        checkpoint_callback = ModelCheckpoint(
-            filepath=os.path.join(artifacts_path, "transformer_model.keras"),  # Save in artifacts folder with epoch number
+        checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+            filepath=os.path.join(artifacts_path, "transformer_model_new.keras"),  # Save in artifacts folder with epoch number
             save_weights_only=False,  # Save the full model
             save_freq='epoch',  # Save at the end of each epoch
             verbose=1  # To print a message when the model is saved
@@ -65,14 +65,14 @@ class Trainer:
         # Training with the checkpoint callback
         print("Training started.....:D")
         # Compilation with binary classification loss
-        model.compile(
+        self.model.compile(
                 loss="binary_crossentropy",
                 optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
                 metrics=["accuracy"],
         )
-        model.summary()
+        self.model.summary()
         
-        history = model.fit(
+        history = self.model.fit(
             self.x_train_max,
             self.y_train,
             validation_data=(self.x_val_max, self.y_val),  # Use x_val_max and y_val for validation
@@ -90,24 +90,4 @@ class Trainer:
         evaluator.evaluate(x_test_max=self.x_test_max, y_test=self.y_test)
         
 
-if __name__ == "__main__":
-    # Instantiate DataLoader and TransformerModel
-    dataloader = DataLoader(
-        baseline_path=Path("C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data/Baseline"),
-        damage_path=Path("C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data/Damage")
-    )
-    #dataloader.load_data()
-    
-    model = TransformerModel(
-        input_shape=(874,), 
-        head_size=512,
-        num_heads=8,
-        ff_dim=128,
-        num_transformer_blocks=4,
-        mlp_units=[256],
-        mlp_dropout=0.4,
-        dropout=0.3,
-    )
-    print("Model created successfully.")
-    trainer = Trainer(model, dataloader, epochs=200, batch_size=32, learning_rate=1e-4, patience=10)
-    x_test_max,y_test=trainer.train()
+

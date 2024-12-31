@@ -64,14 +64,5 @@ class Predictor:
         y_pred = (y_pred_probs > 0.5).astype("int32")
         for i in range(len(y_pred)):
             print(f"Sample {i+1} is {'Damaged' if y_pred[i] == 1 else 'Undamaged'}")
-
-if __name__ == "__main__":
-    model_path = "C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/artifacts/transformer_model.keras"
-    path_to_sample = "C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/data"
-    predictor = Predictor(model_path,path_to_sample)
-    predictor.process_sample()
-    predictor.normlize_data()
-    x_pred_max = predictor.downsample_data()
-    predictor.predict(x_pred_max)
     
 

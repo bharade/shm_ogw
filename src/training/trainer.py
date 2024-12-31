@@ -25,27 +25,28 @@ class Trainer:
         self.early_stopping = EarlyStopping(patience=patience, restore_best_weights=True)
         self.model_checkpoint = ModelCheckpoint("best_model.keras", save_best_only=True)
 
-    def train(self):
-        """
-        Executes the training loop, incorporating validation and performance tracking.
-        """
+    def get_data(self):
         # Load your training and validation data
         udam=[]
         dam=[]
         udam,dam = self.dataloader.load_data()
-        x_train,x_test,x_val, y_train,y_test,y_val=self.dataloader.split_data(udam,dam)
+        self.x_train,self.x_test,self.x_val, self.y_train,self.y_test,self.y_val=self.dataloader.split_data(udam,dam)
         print("Data split successfully.")
         
         # Check the new shape
-        print(f"x_train_max shape: {x_train.shape}")
-        print(f"x_test_max shape: {x_test.shape}")
-        
-        x_train_max,x_val_max,x_test_max=self.dataloader.downsample_data(x_train,x_val,x_test)
+        print(f"x_train_max shape: {self.x_train.shape}")
+        print(f"x_test_max shape: {self.x_test.shape}")
+        self.x_train_max,self.x_val_max,self.x_test_max=self.dataloader.downsample_data(self.x_train,self.x_val,self.x_test)
         print("Data downsampled successfully.")
 
-                # Define the path to the artifacts folder relative to training.py
+    def train(self):
+        """
+        gets the data and trains the model
+        Executes the training loop, incorporating validation and performance tracking.
+        """
+        self.get_data()
         artifacts_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'artifacts'))
-        print(f"the shape of each sample is {x_train_max[0].shape}")
+        print(f"the shape of each sample is {self.x_train_max[0].shape}")
         # Ensure the artifacts folder exists
         os.makedirs(artifacts_path, exist_ok=True)
         print(f"Artifacts path: {artifacts_path} created successfully.")
@@ -72,9 +73,9 @@ class Trainer:
         model.summary()
         
         history = model.fit(
-            x_train_max,
-            y_train,
-            validation_data=(x_val_max, y_val),  # Use x_val_max and y_val for validation
+            self.x_train_max,
+            self.y_train,
+            validation_data=(self.x_val_max, self.y_val),  # Use x_val_max and y_val for validation
             epochs=self.epochs,
             batch_size=self.batch_size,
             callbacks=callbacks,
@@ -82,6 +83,11 @@ class Trainer:
         )
         print("Training completed.......:D")
         return x_test_max, y_test
+    
+    def evaluate(self):
+        # Instantiate the Evaluator
+        evaluator = Evaluator(model_path="C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/artifacts/transformer_model.keras")
+        evaluator.evaluate(x_test_max=x_test_max, y_test=y_test)
         
 
 if __name__ == "__main__":
@@ -105,7 +111,3 @@ if __name__ == "__main__":
     print("Model created successfully.")
     trainer = Trainer(model, dataloader, epochs=200, batch_size=32, learning_rate=1e-4, patience=10)
     x_test_max,y_test=trainer.train()
-
-    # Instantiate the Evaluator
-    evaluator = Evaluator(model_path="C:/Users/adibh/OneDrive/Desktop/projects/simplified_mtp/shm_ogw/artifacts/transformer_model.keras")
-    evaluator.evaluate(x_test_max=x_test_max, y_test=y_test)

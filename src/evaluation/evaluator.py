@@ -41,7 +41,4 @@ class Evaluator:
         print(f"Precision: {precision:.4f}")
         print(f"Recall: {recall:.4f}")
 
-#if __name__ == "__main__":
-    # Instantiate the DataLoader and Evaluator
-    # dataloader = DataLoader(data_dir="C:\\Users\\adibh\\OneDrive\\Desktop\projects\\simplified_mtp\\shm_ogw\\artifacts\\transformer_model.keras")  # Replace with your data directory
     

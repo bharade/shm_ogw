@@ -6,3 +6,5 @@ tensorflow
 datasets
 seaborn
 pathlib
+fastapi==0.78.0
+uvicorn==0.18.3

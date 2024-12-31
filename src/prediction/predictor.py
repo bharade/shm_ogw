@@ -62,6 +62,7 @@ class Predictor:
     def predict(self,x_pred_max):
         y_pred_probs = self.model.predict(x_pred_max)
         y_pred = (y_pred_probs > 0.5).astype("int32")
+        return y_pred
         for i in range(len(y_pred)):
             print(f"Sample {i+1} is {'Damaged' if y_pred[i] == 1 else 'Undamaged'}")
     
